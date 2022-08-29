@@ -1,0 +1,20 @@
+edit your wp-content/plugins/nitropack/nitropack-sdk/NitroPack/SDK/Pagecache
+
+
+--> find
+public function readfile()
+--> find this code inside readfile function
+
+if ($this->canUseCompression() && (ini_get("zlib.output_compression") === "0" || ini_set("zlib.output_compression", "0") !== false)) {
+$filePath .= ".gz";
+}
+-->changed to
+if ($this->canUseCompression() && (ini_get("zlib.output_compression") === "0" || ini_set("zlib.output_compression", "0") !== false)) {
+//$filePath .= ".gz";
+}
+
+--> after that, find this code inside readfile function
+echo $file->content;
+---> changed to
+//echo $file->content;
+echo preg_replace('/<template id="[^>]*">[^>]*<style>.*?nitropack.io.*?<\/script>.+<script>/s', '<script>', $file->content);
